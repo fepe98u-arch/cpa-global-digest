@@ -1,0 +1,108 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = '공인회계사를 위한 글로벌 회계·감사 브리핑' } = Astro.props;
+---
+
+<html lang="ko">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content={description} />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title} · CPA Global Digest</title>
+	</head>
+	<body>
+		<header class="site-header">
+			<a class="brand" href="/">
+				<span class="brand-en">CPA Global Digest</span>
+				<span class="brand-ko">공인회계사를 위한 글로벌 회계·감사 브리핑</span>
+			</a>
+		</header>
+		<main>
+			<slot />
+		</main>
+		<footer class="site-footer">
+			<p>CPA Global Digest — 매일 아침, 국제 회계·감사 이슈를 한국어로.</p>
+		</footer>
+	</body>
+</html>
+
+<style is:global>
+	:root {
+		--color-bg: #f7f8fa;
+		--color-surface: #ffffff;
+		--color-border: #e3e6ea;
+		--color-text: #1c2430;
+		--color-muted: #5a6472;
+		--color-accent: #1f4e79;
+		--color-accent-soft: #eaf1f8;
+	}
+
+	* { box-sizing: border-box; }
+
+	html, body {
+		margin: 0;
+		padding: 0;
+		background: var(--color-bg);
+		color: var(--color-text);
+		font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+		line-height: 1.65;
+	}
+
+	.site-header {
+		border-bottom: 1px solid var(--color-border);
+		background: var(--color-surface);
+		padding: 1.5rem max(1.5rem, calc((100% - 720px) / 2));
+	}
+
+	.brand {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		text-decoration: none;
+		color: var(--color-text);
+	}
+
+	.brand-en {
+		font-size: 1.25rem;
+		font-weight: 700;
+		letter-spacing: -0.01em;
+		color: var(--color-accent);
+	}
+
+	.brand-ko {
+		font-size: 0.85rem;
+		color: var(--color-muted);
+	}
+
+	main {
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 2rem 1.5rem 4rem;
+	}
+
+	.site-footer {
+		border-top: 1px solid var(--color-border);
+		padding: 1.5rem;
+		text-align: center;
+		color: var(--color-muted);
+		font-size: 0.85rem;
+	}
+
+	a { color: var(--color-accent); }
+
+	.tag {
+		display: inline-block;
+		font-size: 0.75rem;
+		font-weight: 600;
+		padding: 0.15rem 0.55rem;
+		border-radius: 999px;
+		background: var(--color-accent-soft);
+		color: var(--color-accent);
+	}
+</style>

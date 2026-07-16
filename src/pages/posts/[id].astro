@@ -1,0 +1,103 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('posts');
+	return posts.map((post) => ({
+		params: { id: post.id },
+		props: { post },
+	}));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const dateFormatter = new Intl.DateTimeFormat('ko-KR', {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+});
+---
+
+<Layout title={post.data.title} description={post.data.summary}>
+	<article>
+		<a class="back" href="/">← 목록으로</a>
+		<span class="tag">{post.data.category}</span>
+		<h1>{post.data.title}</h1>
+		<p class="meta">{dateFormatter.format(post.data.date)} · 출처: {post.data.sourceName}</p>
+
+		<div class="summary-box">
+			<strong>요약</strong>
+			<p>{post.data.summary}</p>
+		</div>
+
+		<div class="detail">
+			<Content />
+		</div>
+
+		<p class="source-link">
+			원문: <a href={post.data.sourceUrl} target="_blank" rel="noopener noreferrer">{post.data.sourceName}</a>
+		</p>
+	</article>
+</Layout>
+
+<style>
+	.back {
+		display: inline-block;
+		margin-bottom: 1.5rem;
+		font-size: 0.9rem;
+		color: var(--color-muted);
+		text-decoration: none;
+	}
+
+	h1 {
+		margin: 0.75rem 0 0.3rem;
+		font-size: 1.6rem;
+		line-height: 1.4;
+	}
+
+	.meta {
+		color: var(--color-muted);
+		font-size: 0.85rem;
+		margin-bottom: 1.75rem;
+	}
+
+	.summary-box {
+		background: var(--color-accent-soft);
+		border-radius: 12px;
+		padding: 1.25rem 1.5rem;
+		margin-bottom: 2rem;
+	}
+
+	.summary-box strong {
+		display: block;
+		font-size: 0.8rem;
+		color: var(--color-accent);
+		margin-bottom: 0.4rem;
+	}
+
+	.summary-box p {
+		margin: 0;
+	}
+
+	.detail {
+		font-size: 1rem;
+	}
+
+	.detail :global(h2) {
+		font-size: 1.15rem;
+		margin-top: 2rem;
+	}
+
+	.detail :global(p) {
+		margin: 0.9rem 0;
+	}
+
+	.source-link {
+		margin-top: 2.5rem;
+		padding-top: 1.25rem;
+		border-top: 1px solid var(--color-border);
+		font-size: 0.9rem;
+	}
+</style>
